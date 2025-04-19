@@ -22,16 +22,18 @@ app.use(
 app.use(cookieParser());
 app.use("/", productsRoute);
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, './../client/build')));
+if (process.env.NODE_ENV === "production") {
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, './../client/build')));
 
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, './../client/build/index.html'))
-);
+    app.get('*', (req, res) =>
+        res.sendFile(path.join(__dirname, './../client/build/index.html'))
+    );
+}
 
 
 connectDB().then(() => {
-  const PORT = 5150;
+  const PORT = 5185;
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}/`);
   });
